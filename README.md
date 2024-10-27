@@ -1,4 +1,5 @@
 <h1>The SDL2 project for eForth windows</h1>
+<img src="sdl2Banner.jpg"/>
 <p>Welcome to the SDL2 project for eForth windows.</p>
 <p>This project aims to:</p>
 <ul>
