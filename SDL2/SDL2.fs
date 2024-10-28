@@ -2,9 +2,9 @@
 \ SDL2 / Simple DirectMedia Player for eForth
 \    Filename:      SDL2.fs
 \    Date:          19 oct 2024
-\    Updated:       19 oct 2024
+\    Updated:       28 oct 2024
 \    File Version:  1.0
-\    Forth:         eFORTH Windows
+\    Forth:         eFORTH Windows & SDL2
 \    Author:        Marc PETREMANN
 \    GNU General Public License
 \ *********************************************************************
@@ -13,99 +13,97 @@
 
 vocabulary SDL2
 SDL2 definitions  windows
-z" SDL2.dll" dll SDL2
+
+\ Entry point to SDL2.dll library
+z" SDL2.dll" dll SDL2.dll
 SDL2
 
 \ load SDL2 library
-s" SDLconstants.fs" included
+include SDL2_CONSTANTS.fs
+include SDL2_error.fs
 
-
-
-4096 constant SDL_MAX_LOG_MESSAGE       \ maximum size of a log message prior to SDL 2.0.24
-
-
-
-\ compute arc cosine of x                                       @ERROR: dont- work
-\ z" SDL_acos"                1 SDL2 acos ( float:n -- n ) 
+include SDL2_init.fs
+include SDL2_render.fs
+include SDL2_window.fs
 
 
 
 
-
-\ infos: https://wiki.libsdl.org/SDL2/SDL_CreateRenderer
-\ Create a 2D rendering context for a window
-z" SDL_CreateRenderer"      3 SDL2 CreateRenderer (  -- render ) 
-
-\ infos: https://wiki.libsdl.org/SDL2/SDL_CreateWindow
-\ Create a window with the specified position, dimensions, and flags.
-z" SDL_CreateWindow"        6 SDL2 CreateWindow ( strz x y w h fl -- win ) 
-
-\ Destroy the rendering context for a window and free associated textures
-z" SDL_DestroyRenderer"     1 SDL2 DestroyRenderer ( render -- ) 
-
-\ Destroy a window.
-z" SDL_DestroyWindow"       1 SDL2 DestroyWindow ( window -- ) 
 
 \ returns the SDL_AudioStatus of the audio device opened by SDL_OpenAudio
-z" SDL_GetAudioStatus"      0 SDL2 GetAudioStatus ( -- status ) 
+z" SDL_GetAudioStatus"      0 SDL2.dll GetAudioStatus ( -- status ) 
 
 \ get the directory where the application was run from
-z" SDL_GetBasePath"         0 SDL2 GetBasePath ( -- strz ) 
+z" SDL_GetBasePath"         0 SDL2.dll GetBasePath ( -- strz ) 
 
 \ returns the total number of logical CPU cores
-z" SDL_GetCPUCount"         0 SDL2 GetCPUCount ( -- n ) 
+z" SDL_GetCPUCount"         0 SDL2.dll GetCPUCount ( -- n ) 
 
 \ returns the active cursor or NULL if there is no mouse
-z" SDL_GetCursor"           0 SDL2 GetCursor ( -- n ) 
+z" SDL_GetCursor"           0 SDL2.dll GetCursor ( -- n ) 
 
-\ Retrieve a message about the last error that occurred on the current thread
-z" SDL_GetError"            1 SDL2 GetError ( n -- ) 
-
-\ infos: https://wiki.libsdl.org/SDL2/SDL_Init
-\ Initialize the SDL library
-\ Returns 0 on success or a negative error code on failure; 
-\ call SDL_GetError() for more information
-z" SDL_Init"                1 SDL2 Init ( n -- 0|err ) 
-
-
-\ \ structure that defines a point                        @ERROR: don-t work ??
-\ \ z" SDL_Point"               0 SDL2 Point ( x y -- ) 
 
 
 \ Poll for currently pending events.
 \ Returns 1 if there is a pending event or 0 if there are none available.
-z" SDL_PollEvent"           0 SDL2 PollEvent ( -- n ) 
+z" SDL_PollEvent"           0 SDL2.dll PollEvent ( -- n ) 
 
-\ Clear the current rendering target with the drawing color
-z" SDL_RenderClear"                1 SDL2 RenderClear ( render -- 0|err ) 
+
+
+
+
+
+\ Draw a line on the current rendering target   @TODO: à tester rapidement
+z" SDL_RenderDrawLine"      5 SDL2.dll RenderDrawLine ( render x1 y1 x2 y2 -- 0|err ) 
+
+
+
+\ Draw a series of connected lines on the current rendering target   @TODO: à tester rapidement
+z" SDL_RenderDrawLines"     3 SDL2.dll RenderDrawLines ( render *points count -- 0|err ) 
+
+
+
+
+
+
+\ Draw a point on the current rendering target   @TODO: à tester rapidement
+z" SDL_RenderDrawPoint"     3 SDL2.dll RenderDrawPoint ( render x y -- 0|err ) 
+
+\ Draw multiple points on the current rendering target   @TODO: à tester rapidement
+z" SDL_RenderDrawPoints"    3 SDL2.dll RenderDrawPoints ( render *points count -- 0|err ) 
+
+
+
+
+
 
 \ Update the screen with any rendering performed since the previous call
-z" SDL_RenderPresent"       1 SDL2 RenderPresent ( render -- ) 
+z" SDL_RenderPresent"       1 SDL2.dll RenderPresent ( render -- ) 
+
+\ Draw a rectangle on the current rendering target   @TODO: à tester rapidement
+z" SDL_RenderDrawRect"      2 SDL2.dll RenderDrawRect ( render *rect -- 0|err ) 
+
+\ Draw some number of rectangles on the current rendering target   @TODO: à tester rapidement
+z" SDL_RenderDrawRects"     3 SDL2.dll RenderDrawRects ( render *rect count -- 0|err ) 
+
+\ Fill a rectangle on the current rendering target with the drawing color   @TODO: à tester rapidement
+z" SDL_RenderFillRect"      2 SDL2.dll RenderFillRect ( render *rect -- 0|err ) 
+
+\ Fill a rectangle on the current rendering target with the drawing color   @TODO: à tester rapidement
+z" SDL_RenderFillRects"     3 SDL2.dll RenderFillRects ( render *rects count -- 0|err ) 
+
+\ Set the drawing scale for rendering on the current target   @TODO: à tester
+z" SDL_RenderSetScale"      3 SDL2.dll RenderSetScale ( render scaleX scaleY -- ) 
 
 \ Clean up all initialized subsystems.
-z" SDL_Quit"                0 SDL2 Quit ( win -- ) 
+z" SDL_Quit"                0 SDL2.dll Quit ( win -- ) 
+\ @TODO: vérifier paramètre "parasite" laissé sur la pile....
 
-\ Set the color used for drawing operations (Rect, Line and Clear)
-z" SDL_SetRenderDrawColor"  5 SDL2 SetRenderDrawColor ( renderer r g b a -- fl ) 
+
 
 
 
 \ ***  Upper level words definitions  ******************************************
 
-\ Initialize SDL with error management
-: SDL.init ( n -- )
-    Init
-    if
-        ." SDl could not intialize! SDL_Error: " getError .
-    then
-  ;
-
-\ Create a window with the specified position, dimensions, and flags.
-: SDL.CreateWindow  ( strz x y w h fl -- win )
-    CreateWindow ?dup 0=
-    if
-        ." Window could not be created! SDL_Error: " getError .
-    then
-  ;
 
 

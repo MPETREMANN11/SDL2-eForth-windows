@@ -14,4 +14,4 @@
 s" SDL2.fs"     included
 
 \ load SDL2 tests
-s" tests.fs"    included
+s" tests/CreateWindow.fs"    included
