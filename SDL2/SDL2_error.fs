@@ -2,7 +2,7 @@
 \ SDL2 / Errors managing
 \    Filename:      SDL2_error.fs
 \    Date:          28 oct 2024
-\    Updated:       28 oct 2024
+\    Updated:       29 oct 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows & SDL2
 \    Author:        Marc PETREMANN
@@ -13,7 +13,6 @@
 
 
 \ Clear any previous error message for this thread
-\ SDL_ClearError
 z" SDL_ClearError"          0 SDL2.dll ClearError ( -- )
 
 \ Retrieve a message about the last error that occurred on the current thread
@@ -38,10 +37,4 @@ z" SDL_SetError"            1 SDL2.dll SetError ( zstr -- -1 )
     getError z>s type
     abort
   ;
-
-\ Example:
-\
-\
-
-
 

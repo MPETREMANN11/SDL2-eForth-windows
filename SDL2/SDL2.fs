@@ -2,31 +2,46 @@
 \ SDL2 / Simple DirectMedia Player for eForth
 \    Filename:      SDL2.fs
 \    Date:          19 oct 2024
-\    Updated:       28 oct 2024
+\    Updated:       29 oct 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows & SDL2
 \    Author:        Marc PETREMANN
 \    GNU General Public License
 \ *********************************************************************
 
+
+
+
+DEFINED? L, invert [IF]
+\ compile 32 bits value in dictionnary
+: L,  ( u -- )
+    dup c,
+    8 rshift dup c,
+    8 rshift dup c,
+    8 rshift dup c,
+  ;
+[THEN]
+
+
+
 \ Source: https://wiki.libsdl.org/SDL2/CategoryAPI 
 
 vocabulary SDL2
-SDL2 definitions  windows
+only FORTH also  windows also  structures also
+SDL2 definitions
 
 \ Entry point to SDL2.dll library
 z" SDL2.dll" dll SDL2.dll
 SDL2
 
 \ load SDL2 library
-include SDL2_CONSTANTS.fs
-include SDL2_error.fs
+include SDL2_CONSTANTS.fs       \ contain lot of CONSTANTS
+include SDL2_STRUCTURES.fs      \ contain Datas Structures
+include SDL2_error.fs           \ manage Errors
 
 include SDL2_init.fs
 include SDL2_render.fs
 include SDL2_window.fs
-
-
 
 
 
@@ -50,19 +65,8 @@ z" SDL_PollEvent"           0 SDL2.dll PollEvent ( -- n )
 
 
 
-
-
-
-\ Draw a line on the current rendering target   @TODO: à tester rapidement
-z" SDL_RenderDrawLine"      5 SDL2.dll RenderDrawLine ( render x1 y1 x2 y2 -- 0|err ) 
-
-
-
 \ Draw a series of connected lines on the current rendering target   @TODO: à tester rapidement
 z" SDL_RenderDrawLines"     3 SDL2.dll RenderDrawLines ( render *points count -- 0|err ) 
-
-
-
 
 
 
@@ -71,9 +75,6 @@ z" SDL_RenderDrawPoint"     3 SDL2.dll RenderDrawPoint ( render x y -- 0|err )
 
 \ Draw multiple points on the current rendering target   @TODO: à tester rapidement
 z" SDL_RenderDrawPoints"    3 SDL2.dll RenderDrawPoints ( render *points count -- 0|err ) 
-
-
-
 
 
 
@@ -104,6 +105,8 @@ z" SDL_Quit"                0 SDL2.dll Quit ( win -- )
 
 
 \ ***  Upper level words definitions  ******************************************
+
+only FORTH
 
 
 

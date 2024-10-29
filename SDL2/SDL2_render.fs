@@ -1,8 +1,8 @@
 \ *********************************************************************
 \ SDL2 / Events managing
 \    Filename:      SDL2_events.fs
-\    Date:          28 oct 2024
-\    Updated:       28 oct 2024
+\    Date:          29 oct 2024
+\    Updated:       29 oct 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows & SDL2
 \    Author:        Marc PETREMANN
@@ -24,4 +24,8 @@ z" SDL_RenderClear"         1 SDL2.dll RenderClear ( render -- 0|err )
 
 \ Set the color used for drawing operations (Rect, Line and Clear)
 z" SDL_SetRenderDrawColor"  5 SDL2.dll SetRenderDrawColor ( renderer r g b a -- fl ) 
+
+\ Draw a line on the current rendering target
+z" SDL_RenderDrawLine"      5 SDL2.dll RenderDrawLine ( render x1 y1 x2 y2 -- 0|err ) 
+
 

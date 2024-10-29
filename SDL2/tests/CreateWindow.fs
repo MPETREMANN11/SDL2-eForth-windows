@@ -33,7 +33,7 @@ SDL2
     X0_SCREEN_POSITION Y0_SCREEN_POSITION
     SCREEN_WIDTH SCREEN_HEIGHT
     SDL_WINDOW_SHOWN
-    SDL.CreateWindow  to WIN0
+    SDL.CreateWindow to WIN0
     \ create a new renderer
     WIN0 -1 0 CreateRenderer  to REN0
   ;
@@ -41,17 +41,23 @@ SDL2
 variable SDLquit
 variable SDLevent
 
+
+variable WIN.width
+variable WIN.height
+
 : draw ( -- )
-    REN0 255 0 0 255 SetRenderDrawColor drop
+    REN0 255 255 255 255 SetRenderDrawColor drop
     REN0 RenderClear drop
     REN0 RenderPresent drop
+\     WIN0 800 600 SetWindowSize drop
+\    WIN0 WIN.width WIN.height GetWindowSize
   ;
 
 \ free ressources, end renderer and window
 : freeRessources ( -- )
     REN0 DestroyRenderer drop
     WIN0 DestroyWindow   drop
-    Quit
+    Quit drop
   ;
 
 : main ( -- )
