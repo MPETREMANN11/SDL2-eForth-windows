@@ -17,4 +17,9 @@ s" SDL2.fs"     included
 s" tests/CreateWindow.fs"    included
 
 \ load SDL2 tests
-s" tests/DrawLines.fs"    included
+\ s" tests/DrawLines.fs"    included
+
+\ load BMP tests
+\ s" tests/LoadBMP.fs"    included
+
+

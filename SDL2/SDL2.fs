@@ -19,7 +19,20 @@ DEFINED? L, invert [IF]
     8 rshift dup c,
     8 rshift dup c,
     8 rshift dup c,
+    drop
   ;
+[THEN]
+
+DEFINED? .( invert [IF]
+-1 value COMMENT_DISPLAY
+: .(   
+    [char] ) parse 
+    COMMENT_DISPLAY if
+        type cr 
+    else
+        2drop
+    then
+  ; immediate
 [THEN]
 
 
@@ -37,13 +50,16 @@ SDL2
 \ load SDL2 library
 include SDL2_CONSTANTS.fs       \ contain lot of CONSTANTS
 include SDL2_STRUCTURES.fs      \ contain Datas Structures
-include SDL2_error.fs           \ manage Errors
-
-include SDL2_init.fs
+include SDL2_error_init.fs      \ manage Errors
+include SDL2_images.fs          \ Contain images bindings
 include SDL2_render.fs
-include SDL2_window.fs
+include SDL2_surface.fs         \ Contain surfaces bindings
+include SDL2_timer.fs
+include SDL2_window.fs          \ Contain windows bindings
 
 
+
+\ ***  Words not tested  *******************************************************
 
 \ returns the SDL_AudioStatus of the audio device opened by SDL_OpenAudio
 z" SDL_GetAudioStatus"      0 SDL2.dll GetAudioStatus ( -- status ) 
@@ -65,40 +81,7 @@ z" SDL_PollEvent"           0 SDL2.dll PollEvent ( -- n )
 
 
 
-\ Draw a series of connected lines on the current rendering target   @TODO: à tester rapidement
-z" SDL_RenderDrawLines"     3 SDL2.dll RenderDrawLines ( render *points count -- 0|err ) 
 
-
-
-\ Draw a point on the current rendering target   @TODO: à tester rapidement
-z" SDL_RenderDrawPoint"     3 SDL2.dll RenderDrawPoint ( render x y -- 0|err ) 
-
-\ Draw multiple points on the current rendering target   @TODO: à tester rapidement
-z" SDL_RenderDrawPoints"    3 SDL2.dll RenderDrawPoints ( render *points count -- 0|err ) 
-
-
-
-\ Update the screen with any rendering performed since the previous call
-z" SDL_RenderPresent"       1 SDL2.dll RenderPresent ( render -- ) 
-
-\ Draw a rectangle on the current rendering target   @TODO: à tester rapidement
-z" SDL_RenderDrawRect"      2 SDL2.dll RenderDrawRect ( render *rect -- 0|err ) 
-
-\ Draw some number of rectangles on the current rendering target   @TODO: à tester rapidement
-z" SDL_RenderDrawRects"     3 SDL2.dll RenderDrawRects ( render *rect count -- 0|err ) 
-
-\ Fill a rectangle on the current rendering target with the drawing color   @TODO: à tester rapidement
-z" SDL_RenderFillRect"      2 SDL2.dll RenderFillRect ( render *rect -- 0|err ) 
-
-\ Fill a rectangle on the current rendering target with the drawing color   @TODO: à tester rapidement
-z" SDL_RenderFillRects"     3 SDL2.dll RenderFillRects ( render *rects count -- 0|err ) 
-
-\ Set the drawing scale for rendering on the current target   @TODO: à tester
-z" SDL_RenderSetScale"      3 SDL2.dll RenderSetScale ( render scaleX scaleY -- ) 
-
-\ Clean up all initialized subsystems.
-z" SDL_Quit"                0 SDL2.dll Quit ( win -- ) 
-\ @TODO: vérifier paramètre "parasite" laissé sur la pile....
 
 
 

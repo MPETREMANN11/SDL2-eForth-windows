@@ -13,7 +13,7 @@
 \ https://github.com/PixelsuftJS/minsdl2js/blob/86aca43794bd670ae9c180d7f8a97820e42ea84e/sdl2.js#L18
 
 
-
+.( load SDL2_CONSTANTS.fs )
 
 4096 constant SDL_MAX_LOG_MESSAGE       \ maximum size of a log message prior to SDL 2.0.24
 

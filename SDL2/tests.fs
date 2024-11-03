@@ -9,6 +9,7 @@
 \    GNU General Public License
 \ *********************************************************************
 
+.( load SDL2_tests.fs )
 
 forth definitions
 SDL2
