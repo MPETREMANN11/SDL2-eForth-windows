@@ -2,7 +2,7 @@
 \ SDL2 / Simple DirectMedia Player for eForth
 \    Filename:      SDL2.fs
 \    Date:          19 oct 2024
-\    Updated:       29 oct 2024
+\    Updated:       05 nov 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows & SDL2
 \    Author:        Marc PETREMANN
@@ -35,6 +35,9 @@ DEFINED? .( invert [IF]
   ; immediate
 [THEN]
 
+DEFINED? NULL invert [IF]
+0 constant NULL
+[THEN]
 
 
 \ Source: https://wiki.libsdl.org/SDL2/CategoryAPI 
