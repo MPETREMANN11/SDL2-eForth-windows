@@ -15,7 +15,6 @@
 \     SDL_AddTimer
 \     SDL_GetPerformanceCounter
 \     SDL_GetPerformanceFrequency
-\     SDL_GetTicks64
 \     SDL_RemoveTimer
 
 
@@ -24,6 +23,9 @@ z" SDL_Delay"               1 SDL2.dll Delay ( ms -- fl )
 
 \ Get the number of milliseconds since SDL library initialization  @TODO à tester
 z" SDL_GetTicks"            0 SDL2.dll GetTicks ( -- ms ) 
+
+\ Get the number of milliseconds since SDL library initialization  @TODO à tester
+z" SDL_GetTicks64"          0 SDL2.dll GetTicks64 ( -- ms ) 
 
 
 

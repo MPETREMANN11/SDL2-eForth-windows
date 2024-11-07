@@ -38,7 +38,6 @@
 \ SDL_GetWindowBrightness
 \ SDL_GetWindowData
 \ SDL_GetWindowDisplayIndex
-\ SDL_GetWindowDisplayMode
 \ SDL_GetWindowFromID
 \ SDL_GetWindowGammaRamp
 \ SDL_GetWindowGrab
@@ -111,7 +110,7 @@ z" SDL_CreateWindow"        6 SDL2.dll CreateWindow ( strz x y w h fl -- win )
 z" SDL_DestroyWindow"       1 SDL2.dll DestroyWindow ( window -- ) 
 
 \ Get the window flags
-z" SDL_GetWindowFlags"      1 SDL2.dll GetWindowFlags ( window -- fl ) 
+z" SDL_GetWindowFlags"      1 SDL2.dll GetWindowFlags ( window -- flags ) 
 
 \ Get the size of a window in pixels, store values in variables
 z" SDL_GetWindowSizeInPixels"  3 SDL2.dll GetWindowSizeInPixels ( windows addr-w addr-h -- fl ) 
@@ -163,6 +162,8 @@ z" SDL_GetWindowTitle"      1 SDL2.dll GetWindowTitle ( window -- char* )
 
 
 
+\ Query the display mode to use when a window is visible at fullscreen @TODO à tester rapidement
+z" SDL_GetWindowDisplayMode"   12 SDL2.dll GetWindowDisplayMode ( *window *mode -- 0|err ) 
 
 
 

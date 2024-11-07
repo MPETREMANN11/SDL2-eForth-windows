@@ -11,15 +11,15 @@
 
 
 \ load SDL2 library
-s" SDL2.fs"     included
+include SDL2.fs
 
 \ load SDL2 tests
-s" tests/CreateWindow.fs"    included
+\ include tests/CreateWindow
 
 \ load SDL2 tests
-\ s" tests/DrawLines.fs"    included
+\ include tests/DrawLines.fs
 
 \ load BMP tests
-\ s" tests/LoadBMP.fs"    included
+include tests/LoadBMP.fs
 
 

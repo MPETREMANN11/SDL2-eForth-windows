@@ -20,7 +20,6 @@
 \ SDL_CreateRGBSurfaceWithFormatFrom
 \ SDL_FillRect
 \ SDL_FillRects
-\ SDL_FreeSurface
 \ SDL_GetClipRect
 \ SDL_GetColorKey
 \ SDL_GetSurfaceAlphaMod
@@ -30,7 +29,6 @@
 \ SDL_GetYUVConversionModeForResolution
 \ SDL_HasColorKey
 \ SDL_HasSurfaceRLE
-\ SDL_LoadBMP_RW
 \ SDL_LockSurface
 \ SDL_LowerBlit
 \ SDL_LowerBlitScaled
@@ -49,5 +47,33 @@
 \ SDL_UnlockSurface
 \ SDL_UpperBlit
 \ SDL_UpperBlitScaled
+
+
+
+\ Free an RGB surface
+z" SDL_FreeSurface"         1 SDL2.dll FreeSurface ( surface -- flags ) 
+
+\ Load a surface from a file
+\ SDL_LoadBMP is a macro for SDL_LoadBMP_RW
+
+\ Load a BMP image from a seekable SDL data stream
+z" SDL_LoadBMP_RW"          2 SDL2.dll LoadBMP_RW ( *file n -- 0|surface )
+
+
+
+\ ***  Upper level words definitions  ******************************************
+
+: LoadBMP  ( zstr -- 0|surface )
+    z" rb" RWFromFile 1 LoadBMP_RW
+  ;
+
+: SDL.load-image  ( zstr -- surface )
+    LoadBMP ?dup 0= if
+        drop -1 SDL.error
+    then
+  ;
+
+
+
 
 

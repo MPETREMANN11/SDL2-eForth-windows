@@ -17,13 +17,13 @@ vocabulary SDL_structures
 SDL_structures definitions
 
 
-struct SDL_Color
+struct SDL_Color ( -- 4 )               \ OK 2024-11-06
      i8 field ->Color-r
      i8 field ->Color-g
      i8 field ->Color-b
      i8 field ->Color-a
 
-struct SDL_Palette
+struct SDL_Palette  ( -- 16 )           \ OK 2024-11-06
     i32 field ->Palette-ncolors
     SDL_Color field ->Palette-colors
     i32 field ->Palette-version
@@ -53,11 +53,11 @@ struct SDL_PixelFormat
      i8 field ->PixelFormat-Rshift
      i8 field ->PixelFormat-Ashift
 
-struct SDL_Point
+struct SDL_Point  ( -- 8 )              \ OK 2024-11-06                 
     i32 field ->Point-x
     i32 field ->Point-y
 
-struct SDL_Rect
+struct SDL_Rect  ( -- 16 )              \ OK 2024-11-06
     i32 field ->Rect-x
     i32 field ->Rect-y
     i32 field ->Rect-w
@@ -70,6 +70,27 @@ struct SDL_Rect
 
 
 
+
+\ struct SDL_Surface
+\ {
+\     SDL_SurfaceFlags flags;     /**< The flags of the surface, read-only */
+\     SDL_PixelFormat format;     /**< The format of the surface, read-only */
+\     int w;                      /**< The width of the surface, read-only. */
+\     int h;                      /**< The height of the surface, read-only. */
+\     int pitch;                  /**< The distance in bytes between rows of pixels, read-only */
+\     void *pixels;               /**< A pointer to the pixels of the surface, the pixels are writeable if non-NULL */
+\ 
+\     int refcount;               /**< Application reference count, used when freeing surface */
+\ 
+\     void *reserved;             /**< Reserved for internal use */
+\ };
+
+struct SDL_Surface
+    i32 field ->Surface-flags
+    $48 field ->Surface-format    \ valeur fixe temporaire - pour tests
+    i32 field ->Surface-w
+    i32 field ->Surface-h
+    i32 field ->Surface-pitch
 
 
 
@@ -199,6 +220,15 @@ struct SDL_Event
 
 
 
+\ Information about the version of SDL in use
+struct SDL_version    ( -- 3 )              \ OK 2024-11-06 
+     i8 field ->version-major
+     i8 field ->version-minor
+     i8 field ->version-patch
+
+
+
+
 \ ***  Continue definitions in SDL2 vocabulary  ********************************
 
 SDL2 definitions
@@ -236,3 +266,7 @@ SDL_structures
 \ example:
 \ create ext-bord SDL_Rect allot
 \   25 70 100 100 ext-bord SDL_Rect!
+
+
+
+

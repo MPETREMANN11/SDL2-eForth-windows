@@ -2,7 +2,7 @@
 \ SDL2 / Simple DirectMedia Player for eForth
 \    Filename:      SDL2.fs
 \    Date:          19 oct 2024
-\    Updated:       05 nov 2024
+\    Updated:       06 nov 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows & SDL2
 \    Author:        Marc PETREMANN
@@ -50,16 +50,22 @@ SDL2 definitions
 z" SDL2.dll" dll SDL2.dll
 SDL2
 
+\ load diverses tools
+include dumpTool.fs             \ dump tool
+include assert.fs               \ assert for tests
+
 \ load SDL2 library
 include SDL2_CONSTANTS.fs       \ contain lot of CONSTANTS
 include SDL2_STRUCTURES.fs      \ contain Datas Structures
 include SDL2_error_init.fs      \ manage Errors
+include SDL2_rwops.fs           \ Read/Write operations
 include SDL2_images.fs          \ Contain images bindings
 include SDL2_render.fs
 include SDL2_surface.fs         \ Contain surfaces bindings
 include SDL2_timer.fs
 include SDL2_window.fs          \ Contain windows bindings
 
+include SDL2_tests.fs           \ make many tests
 
 
 \ ***  Words not tested  *******************************************************
@@ -82,8 +88,12 @@ z" SDL_GetCursor"           0 SDL2.dll GetCursor ( -- n )
 \ Returns 1 if there is a pending event or 0 if there are none available.
 z" SDL_PollEvent"           0 SDL2.dll PollEvent ( -- n ) 
 
+\ Get the code revision of SDL that is linked against your program
+z" SDL_GetRevision"         0 SDL2.dll GetRevision ( -- zstr ) 
 
 
+\ Get the version of SDL that is linked against your program
+z" SDL_GetVersion"          1 SDL2.dll GetVersion ( *ver -- ) 
 
 
 
