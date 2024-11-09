@@ -2,7 +2,7 @@
 \ SDL2 / Simple DirectMedia Player for eForth
 \    Filename:      main.fs
 \    Date:          19 oct 2024
-\    Updated:       29 oct 2024
+\    Updated:       07 nov 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows
 \    Author:        Marc PETREMANN
@@ -20,6 +20,9 @@ include SDL2.fs
 \ include tests/DrawLines.fs
 
 \ load BMP tests
-include tests/LoadBMP.fs
+\ include tests/LoadBMP.fs
+
+\ load event tests
+include tests/EventsTest.fs
 
 

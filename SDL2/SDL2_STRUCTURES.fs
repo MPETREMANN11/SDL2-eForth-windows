@@ -2,7 +2,7 @@
 \ SDL2 / Simple DirectMedia Player for eForth - structures definition
 \    Filename:      SD2_STRUCTURES.fs
 \    Date:          28 oct 2024
-\    Updated:       29 oct 2024
+\    Updated:       07 nov 2024
 \    File Version:  1.0
 \    Forth:         eFORTH Windows
 \    Author:        Marc PETREMANN
@@ -145,80 +145,71 @@ struct SDL_CommonEvent
 \     Uint8 padding[56];
 \ } SDL_Event;
 
+\ source: https://github.com/zielmicha/SDL2/blob/master/include/SDL_events.h#L127
+
+struct SDL_GenericEvent
+    i32 field ->GenericEvent-type
+    i32 field ->GenericEvent-timestamp
+
+struct SDL_WindowEvent
+    i32 field ->WindowEvent-type
+    i32 field ->WindowEvent-timestamp
+    i32 field ->WindowEvent-windowID    \ The associated window
+     i8 field ->WindowEvent-event       \ SDL_WindowEventID
+     i8 field ->WindowEvent-padding1
+     i8 field ->WindowEvent-padding2
+     i8 field ->WindowEvent-padding3
+    i32 field ->WindowEvent-data1       \ event dependent data
+    i32 field ->WindowEvent-data2       \ event dependent data
+
+
+\ The SDL keyboard scancode representation
+struct SDL_Scancode
+    i32 field ->scancode
+
+\ The SDL virtual key representation
+struct SDL_Keycode
+    i32 field ->Keycode-sym
+
+\ The SDL keysym structure, used in key events
+struct SDL_Keysym
+    SDL_Scancode    field ->Keysym-scancode     \ SDL physical key code - see SDL_Scancode for details
+    SDL_Keycode     field ->Keycode-sym         \ SDL virtual key code - see SDL_Keycode for details
+    i16 field ->Keysym-mod                      \ current key modifiers
+    i32 field ->Keysym-unused
+
+\ Keyboard button event structure (event.key.*)
+struct SDL_KeyboardEvent
+    i32 field ->KeyboardEvent-type              \ SDL_KEYDOWN or SDL_KEYUP
+    i32 field ->KeyboardEvent-timestamp
+    i32 field ->KeyboardEvent-windowID          \ The window with keyboard focus, if any
+     i8 field ->KeyboardEvent-state             \ SDL_PRESSED or SDL_RELEASED
+     i8 field ->KeyboardEvent-repeat            \ Non-zero if this is a key repeat
+     i8 field ->KeyboardEvent-padding2
+     i8 field ->KeyboardEvent-padding3
+    SDL_Keysym  field ->KeyboardEvent-keysym    \ The key that was pressed or released
+
+
+
+\ Keyboard text editing event structure (event.edit.*)
+struct SDL_TextEditingEvent
+    i32 field ->TextEditingEvent-type                               \ SDL_TEXTEDITING
+    i32 field ->TextEditingEvent-timestamp                          \ In milliseconds, populated using SDL_GetTicks
+    i32 field ->TextEditingEvent-windowID                           \ The window with keyboard focus, if any
+    SDL_TEXTEDITINGEVENT_TEXT_SIZE field ->TextEditingEvent-text    \ The editing text
+    i32 field ->TextEditingEvent-start                              \ The start cursor of selected editing text
+    i32 field ->TextEditingEvent-length                             \ The length of selected editing text
+
+
+
 
 \ union SDL_Event
 struct SDL_Event
-                       i32 field ->Event-type
-\ 	drop 0 56 bytes: SDL_Event-padding
-\ 	drop 0 SDL_CommonEvent bytes:				SDL_Event-common
-\ 	drop 0 SDL_DisplayEvent bytes:				SDL_Event-display
-\ 	drop 0 SDL_WindowEvent bytes:				SDL_Event-window
-\ 	drop 0 SDL_KeyboardEvent bytes:				SDL_Event-key
-\ 	drop 0 SDL_TextEditingEvent bytes:			SDL_Event-edit
-\ 	drop 0 SDL_TextEditingExtEvent bytes:		SDL_Event-editExt
-\ 	drop 0 SDL_TextInputEvent bytes:			SDL_Event-text
-\ 	drop 0 SDL_MouseMotionEvent bytes:			SDL_Event-motion
-\ 	drop 0 SDL_MouseButtonEvent bytes:			SDL_Event-button
-\ 	drop 0 SDL_MouseWheelEvent bytes:			SDL_Event-wheel
-\ 	drop 0 SDL_JoyAxisEvent bytes:				SDL_Event-jaxis
-\ 	drop 0 SDL_JoyBallEvent bytes:				SDL_Event-jball
-\ 	drop 0 SDL_JoyHatEvent bytes:				SDL_Event-jhat
-\ 	drop 0 SDL_JoyButtonEvent bytes:			SDL_Event-jbutton
-\ 	drop 0 SDL_JoyDeviceEvent bytes:			SDL_Event-jdevice
-\ 	drop 0 SDL_JoyBatteryEvent bytes:			SDL_Event-jbattery
-\ 	drop 0 SDL_ControllerAxisEvent bytes:		SDL_Event-caxis
-\ 	drop 0 SDL_ControllerButtonEvent bytes:		SDL_Event-cbutton
-\ 	drop 0 SDL_ControllerDeviceEvent bytes:		SDL_Event-cdevice
-\ 	drop 0 SDL_ControllerTouchpadEvent bytes:	SDL_Event-ctouchpad
-\ 	drop 0 SDL_ControllerSensorEvent bytes:		SDL_Event-csensor
-\ 	drop 0 SDL_AudioDeviceEvent bytes:			SDL_Event-adevice
-\ 	drop 0 SDL_TouchFingerEvent bytes:			SDL_Event-tfinger
-\ 	drop 0 SDL_MultiGestureEvent bytes:			SDL_Event-mgesture
-\ 	drop 0 SDL_DollarGestureEvent bytes:		SDL_Event-dgesture
-\ 	drop 0 SDL_DropEvent bytes:					SDL_Event-drop
-\ 	drop 0 SDL_SensorEvent bytes:				SDL_Event-sensor
-\ 	drop 0 SDL_QuitEvent bytes:					SDL_Event-quit
-\ 	drop 0 SDL_UserEvent bytes:					SDL_Event-user
-\ 	drop 0 SDL_SysWMEvent bytes:				SDL_Event-syswm
-
-
-\ struct SDL_Event    \ version mauvaise apparement
-\                        i32 field ->Event-type
-\ \ @TODO: gros souci de cohérence par rapport au code C
-\                         16 field ->Event-jhat
-\                         24 field ->Event-window
-\                         12 field ->Event-cdevice
-\                         16 field ->Event-adevice
-\                         48 field ->Event-sensor
-\                         20 field ->Event-jball
-\                         20 field ->Event-caxis
-\                         28 field ->Event-button
-\                         16 field ->Event-jbutton
-\                         40 field ->Event-csensor
-\                         44 field ->Event-wheel
-\                         36 field ->Event-motion
-\                         40 field ->Event-mgesture
-\                         40 field ->Event-dgesture
-\                         24 field ->Event-drop
-\     SDL_CommonEvent        field ->Event-common
-\                         32 field ->Event-key
-\                         52 field ->Event-edit
-\                         20 field ->Event-display
-\                         16 field ->Event-cbutton
-\                         32 field ->Event-ctouchpad
-\                         48 field ->Event-tfinger
-\                         32 field ->Event-editExt
-\                          4 field ->Event-type
-\                         20 field ->Event-jaxis
-\                         12 field ->Event-jdevice
-\                         16 field ->Event-syswm
-\                         56 field ->Event-padding
-\                          8 field ->Event-quit
-\                         32 field ->Event-user
-\                         44 field ->Event-text
-\                         16 field ->Event-jbattery
-
-
+                        i32 field ->Event-type
+    SDL_GenericEvent        field ->Event-generic
+    SDL_WindowEvent         field ->Event-window
+    SDL_KeyboardEvent       field ->Event-key
+    SDL_TextEditingEvent    field ->Event-edit
 
 \ Information about the version of SDL in use
 struct SDL_version    ( -- 3 )              \ OK 2024-11-06 

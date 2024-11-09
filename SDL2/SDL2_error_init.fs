@@ -53,7 +53,7 @@ z" SDL_Quit"                0 SDL2.dll Quit ( -- )
   ;
 
 \ Initialize SDL with error management
-: SDL.init ( n -- )
+: SDL.init ( -- )
     z" Could not Initialize environement " SetError drop
     Init 0= if
         -1 SDL.error
